@@ -1,0 +1,39 @@
+{
+  "name": "web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbo",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@repo/ui": "*",
+    "@types/google-one-tap": "^1.2.6",
+    "axios": "^1.7.7",
+    "next": "14.2.6",
+    "react": "18.3.1",
+    "react-diff-viewer": "^3.1.1",
+    "react-dom": "18.3.1",
+    "xml-js": "^1.6.11"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "*",
+    "@repo/typescript-config": "*",
+    "@types/gapi": "^0.0.47",
+    "@types/gapi.auth2": "^0.0.60",
+    "@types/gapi.client": "^1.0.8",
+    "@types/gapi.client.gmail-v1": "^0.0.4",
+    "@types/google.accounts": "^0.0.14",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.6",
+    "postcss": "^8.4.45",
+    "tailwindcss": "^3.4.10",
+    "typescript": "^5"
+  }
+}
