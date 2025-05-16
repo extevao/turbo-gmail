@@ -1,11 +1,14 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
+const dotenv = require('dotenv');
+dotenv.config();
+
 // Update with your config settings.
 /**
  * @type { import("knex").Knex.Config }
  */
 const pg = {
   client: 'pg',
-  connection:
-    'postgresql://postgres:postgrilo1010@localhost:5432/turbo-gmail?schema=public',
+  connection: process.env.DATABASE_URL,
   pool: {
     min: 0,
     max: 2,

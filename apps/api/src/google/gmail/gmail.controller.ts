@@ -24,7 +24,12 @@ export class GmailController {
 
   @Post()
   create(@Body() createGmailDto: CreateGmailDto) {
-    return this.gmailService.create(createGmailDto);
+    try {
+      return this.gmailService.create(createGmailDto);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
   }
 
   @Get()

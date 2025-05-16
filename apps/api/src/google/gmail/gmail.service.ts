@@ -1,3 +1,6 @@
+import * as path from 'node:path';
+import * as fs from 'node:fs';
+
 import { Injectable } from '@nestjs/common';
 import { CreateGmailDto } from './dto/create-gmail.dto';
 
@@ -24,18 +27,34 @@ export class GmailService {
       'base64',
     )}?=`;
 
+    const filePath = path.join(__dirname, '../../../arquivos', 'documento.pdf');
+    const fileData = fs.readFileSync(filePath).toString('base64');
+
+    const boundary = '__MY_BOUNDARY__';
+
     const messageParts = [
-      'From: Estevao TurboGmail <estevaoblv@gmail.com>',
+      `Content-Type: multipart/mixed; boundary="${boundary}"`,
+      'MIME-Version: 1.0',
       `To: ${createGmailDto.to}`,
+      'From: Estevao TurboGmail <estevaoblv@gmail.com>',
+      `Subject: ${utf8Subject}`,
+      '',
+      `--${boundary}`,
       'Content-Type: text/html; charset=utf-8',
       'MIME-Version: 1.0',
-      `Subject: ${utf8Subject}`,
-      // `In-Reply-To: <1921ff2f7f07400c>`,
-      // `References: <1921ff2f7f07400c>`,
+      'Content-Transfer-Encoding: 7bit',
       '',
       createGmailDto.messageBody,
-      // '',
-      // 'mensagem <b>anterior</b>',
+      '',
+      `--${boundary}`,
+      'Content-Type: application/pdf',
+      'MIME-Version: 1.0',
+      'Content-Transfer-Encoding: base64',
+      'Content-Disposition: attachment; filename="documento.pdf"',
+      '',
+      fileData,
+      '',
+      `--${boundary}--`,
     ];
 
     const message = messageParts.join('\n');
@@ -54,13 +73,15 @@ export class GmailService {
       },
     });
 
-    const modifyRes = await gmail.users.messages.modify({
-      userId: 'me',
-      id: res.data.id,
-      requestBody: {
-        addLabelIds: ['Label_6'],
-      },
-    });
+    console.log(res);
+
+    // const modifyRes = await gmail.users.messages.modify({
+    //   userId: 'me',
+    //   id: res.data.id,
+    //   requestBody: {
+    //     addLabelIds: ['Label_6'],
+    //   },
+    // });
 
     await this.createEmail({
       createGmailDto,
@@ -70,7 +91,7 @@ export class GmailService {
       responseData: res.data,
     });
 
-    return { resData: res.data, modify: modifyRes.data };
+    return { resData: res.data };
   }
 
   async findAll() {
