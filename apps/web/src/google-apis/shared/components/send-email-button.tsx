@@ -9,8 +9,8 @@ export function SendEmailButton() {
     )}?=`;
 
     const messageParts = [
-      "From: Estevao TurboGmail <estevaoblv@gmail.com>",
-      "To: estevao.vasques@bmlog.com.br, estevaovasques@hotmail.com",
+      "From: Estevao <estevaoblv@gmail.com>",
+      "To: estevao.vasques@bmlog.com.br",
       "Content-Type: text/html; charset=utf-8",
       "MIME-Version: 1.0",
       `Subject: ${utf8Subject}`,

@@ -27,8 +27,21 @@ export class GmailService {
       'base64',
     )}?=`;
 
-    const filePath = path.join(__dirname, '../../../arquivos', 'documento.pdf');
-    const fileData = fs.readFileSync(filePath).toString('base64');
+    const hblData = fs
+      .readFileSync(
+        path.join(__dirname, '../../../arquivos', 'HBL ORIGINAL.pdf'),
+      )
+      .toString('base64');
+
+    const documentoPdfData = fs
+      .readFileSync(path.join(__dirname, '../../../arquivos', 'documento.pdf'))
+      .toString('base64');
+
+    const fotoData = fs
+      .readFileSync(
+        path.join(__dirname, '../../../arquivos', '20250424095201.jpg'),
+      )
+      .toString('base64');
 
     const boundary = '__MY_BOUNDARY__';
 
@@ -36,7 +49,7 @@ export class GmailService {
       `Content-Type: multipart/mixed; boundary="${boundary}"`,
       'MIME-Version: 1.0',
       `To: ${createGmailDto.to}`,
-      'From: Estevao TurboGmail <estevaoblv@gmail.com>',
+      'From: Estevao <estevaoblv@gmail.com>',
       `Subject: ${utf8Subject}`,
       '',
       `--${boundary}`,
@@ -50,10 +63,29 @@ export class GmailService {
       'Content-Type: application/pdf',
       'MIME-Version: 1.0',
       'Content-Transfer-Encoding: base64',
+      'Content-Disposition: attachment; filename="HBL Original.pdf"',
+      '',
+      hblData,
+      '',
+
+      `--${boundary}`,
+      'Content-Type: application/pdf',
+      'MIME-Version: 1.0',
+      'Content-Transfer-Encoding: base64',
       'Content-Disposition: attachment; filename="documento.pdf"',
       '',
-      fileData,
+      documentoPdfData,
       '',
+
+      `--${boundary}`,
+      'Content-Type: image/jpeg',
+      'MIME-Version: 1.0',
+      'Content-Transfer-Encoding: base64',
+      'Content-Disposition: attachment; filename="foto.jpg"',
+      '',
+      fotoData,
+      '',
+
       `--${boundary}--`,
     ];
 
@@ -71,9 +103,10 @@ export class GmailService {
         raw: encodedMessage,
         // threadId: '1921feaa8be2edac',
       },
+      uploadType: 'multipart',
     });
 
-    console.log(res);
+    console.log(res.data);
 
     // const modifyRes = await gmail.users.messages.modify({
     //   userId: 'me',
